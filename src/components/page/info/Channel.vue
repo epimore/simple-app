@@ -3,7 +3,8 @@ import {onMounted, ref} from "vue";
 import infosApi from "@/api/info.js";
 import {ElMessage} from "element-plus";
 import imgUrl from '@/assets/ipc.png'
-import Play from "@/components/page/info/Play.vue";
+import PlayLive from "@/components/page/info/PlayLive.vue";
+import PlayBack from "@/components/page/info/PlayBack.vue";
 
 const channels = ref([]);
 const deviceInfo = ref(null)
@@ -34,23 +35,25 @@ const returnToDeviceList = () => {
   props.emitter.emit('switch-to-device');
 };
 
-const showDialog = ref(false);
-const dialogTitle = ref('添加设备');
+const showLiveDialog = ref(false);
+const showBackDialog = ref(false);
+const dialogTitle = ref('播放');
 const currentItemInfo = ref({});
 const startPlay = (mode, item = {}) => {
   if (mode === 'live') {
     dialogTitle.value = '实时直播';
+    showLiveDialog.value = true;
   } else {
     dialogTitle.value = '历史回放';
+    showBackDialog.value = true;
   }
   currentItemInfo.value = item;
-  showDialog.value = true;
 };
 
 // 关闭操作
 const closePlay = () => {
   getChannels(props.deviceInfo.deviceId);
-  showDialog.value = false
+  showLiveDialog.value = false
 }
 </script>
 
@@ -94,7 +97,9 @@ const closePlay = () => {
                 <el-button type="info" class="button" :disabled="item.status !== 'ON'" @click="startPlay('live',item)">
                   实时直播
                 </el-button>
-                <el-button type="info" class="button" :disabled="item.status !== 'YES'">历史回放:(todo)</el-button>
+                <el-button type="info" class="button" :disabled="item.status !== 'ON'" @click="startPlay('back',item)">
+                  历史回放
+                </el-button>
               </div>
             </template>
           </el-card>
@@ -102,8 +107,13 @@ const closePlay = () => {
       </el-row>
     </div>
   </el-card>
-  <Play v-if="showDialog"
-        v-model="showDialog"
+  <PlayLive v-if="showLiveDialog"
+        v-model="showLiveDialog"
+        :dialogTitle="dialogTitle"
+        :videoInfo="currentItemInfo"
+        @closePlay="closePlay"/>
+  <PlayBack v-if="showBackDialog"
+        v-model="showBackDialog"
         :dialogTitle="dialogTitle"
         :videoInfo="currentItemInfo"
         @closePlay="closePlay"/>
