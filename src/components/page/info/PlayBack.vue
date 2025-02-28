@@ -13,21 +13,29 @@
 
       <!-- 按钮组（放在播放器右侧） -->
       <div class="time-buttons">
-        <span class="time-label">时间选择：</span>
+        <span class="time-label">点播选择：</span>
         <el-date-picker
             v-model="datetime"
             type="datetime"
-            placeholder="回放开始时间"
+            placeholder="选择开始时间"
             format="YYYY-MM-DD HH:mm"
             :disabled-date="disabledDate"
+            @change="handleChange"
+            style="--el-date-editor-width: 100%;"
         />
-        <el-row :gutter="10">
-          <el-col v-for="(item, index) in 24" :key="index" :span="12" class="block">
-            <el-button class="fixed-button" type="info" round @click="setTimeRange(item)">
-              {{ item }} 小时
-            </el-button>
-          </el-col>
-        </el-row>
+
+        <div class="time-points">
+          <el-row :gutter="10" v-for="(p, index) in timeBlocks" :key="index">
+            <el-col span=24 class="time-label">{{ p.date }}</el-col>
+            <br>
+            <el-col v-for="(c, index) in p.time" :key="index" :span="12" class="block">
+              <el-button class="fixed-button" type="info" size="small" round @click="perSkipToTime(p.date,c)">
+                {{ c }}点
+              </el-button>
+            </el-col>
+          </el-row>
+        </div>
+
       </div>
     </div>
   </el-dialog>
@@ -39,6 +47,7 @@ import {nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, unref} from "vue
 import streamApi from "@/api/stream.js";
 import imgUrl from '@/assets/video_poster.gif';
 import {ElMessage} from "element-plus";
+import moment from 'moment';
 
 onMounted(() => {
   nextTick(() => {
@@ -95,14 +104,83 @@ const createPlayer = () => {
     console.log('playbackSeek', data)
   })
 }
-const datetime = ref([null, null]);
-const currentDate = new Date(); // 获取当前时间
+
+const timeBlocks = ref([])
+const datetime = ref(null);
+const currentDate = moment(); // 获取当前时间
 // 禁用当前时间以后的日期
 const disabledDate = (date) => {
-  return date.getTime() > currentDate.getTime();
+  return date.getTime() > currentDate.valueOf();
 };
 
+const handleChange = () => {
+  const startTime = datetime.value;
+  if (startTime >= currentDate) {
+    return ElMessage.error("开始时间必须晚于当前时间！");
+  }
+  let startMoment = moment(startTime);
+  let startDate = startMoment.format('YYYY-MM-DD');
+  let sh = startTime.getHours();
+  if (sh === 0 && startTime.getMinutes() === 0) { //非跨天生成
+    let currentHours = currentDate.hours()+1;
+    let hour = currentDate.isSame(startMoment,'day')?currentHours:24;
+    let periods = buildFloorPeriods(hour);
+    timeBlocks.value = [{date: startDate, time: periods}];
+  } else {
+    if (currentDate.unix()-startMoment.unix()>=86400){
+      let startPeriods = buildUpPeriods(sh);
+      let endMoment = startMoment.add(1, 'days');
+      let endPeriods = buildFloorPeriods(endMoment.hours());
+      let endDate = endMoment.format('YYYY年-MM月-DD日');
+      timeBlocks.value = [{date: startDate, time: startPeriods},
+        {date: endDate, time: endPeriods}
+      ];
+    }else {
+      if (currentDate.isSame(startMoment,'day')){
+        let periods = buildMidPeriods(startMoment.hours(),currentDate.hours());
+        timeBlocks.value = [{date: startDate, time: periods}];
+      }else {
+        let endPeriods = buildFloorPeriods(currentDate.hours()+1);
+        let startPeriods = buildUpPeriods(sh);
+        let endDate = currentDate.format('YYYY年-MM月-DD日');
+        timeBlocks.value = [{date: startDate, time: startPeriods},
+          {date: endDate, time: endPeriods}
+        ];
+      }
+    }
+  }
+  // 这里可以添加其他逻辑，例如验证、触发 API 请求等
+};
+
+const buildMidPeriods = (sh,eh) =>{
+  const periods = [];
+  for (let i = sh; i <= eh; i++) {
+    periods.push(i);
+  }
+  return periods;
+}
+
+const buildUpPeriods = (hour) => {
+  const periods = [];
+  for (let i = hour; i <= 23; i++) {
+    periods.push(i);
+  }
+  return periods;
+}
+
+const buildFloorPeriods = (hour) => {
+  const periods = [];
+  for (let i = 0; i < hour; i++) {
+    periods.push(i);
+  }
+  return periods;
+}
+
+const perSkipToTime = async (date,time) =>{
+  console.log(date,time);
+}
 const startPlay = async () => {
+
   const [startTime, endTime] = datetime.value;
   if (!startTime) {
     return ElMessage.error("开始时间不能为空！");
@@ -130,7 +208,7 @@ const startPlay = async () => {
     datetime.value[1] = adjustedEndTime;
     return ElMessage.warning("结束时间与开始时间的差值小于 5 分钟，已自动调整结束时间为开始时间 5 分钟后！");
   }
-  if (diffInMinutes > 1440){
+  if (diffInMinutes > 1440) {
     const adjustedEndTime = new Date(startTime);
     adjustedEndTime.setMinutes(adjustedEndTime.getMinutes() + 1440); // 设置结束时间为开始时间后 5 分钟
     datetime.value[1] = adjustedEndTime;
@@ -139,15 +217,15 @@ const startPlay = async () => {
   unref(easyplayer).play("http://220.161.87.62:8800/hls/1/index.m3u8");
   // unref(easyplayer).play("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
 
-/*  const res = await getBackPlayInfo(startTime, endTime);
-  if (res) {
-    let flvUrl = res.flv;
-    let gmvToken = sessionStorage.getItem('Gmv-Token');
-    const url = flvUrl + "?gmv-token=" + gmvToken;
-    unref(easyplayer).play(url);
-  } else {
-    ElMessage.error('播放失败，请稍后重试...')
-  }*/
+  /*  const res = await getBackPlayInfo(startTime, endTime);
+    if (res) {
+      let flvUrl = res.flv;
+      let gmvToken = sessionStorage.getItem('Gmv-Token');
+      const url = flvUrl + "?gmv-token=" + gmvToken;
+      unref(easyplayer).play(url);
+    } else {
+      ElMessage.error('播放失败，请稍后重试...')
+    }*/
 }
 
 const getBackPlayInfo = async (st, et) => {
@@ -184,30 +262,32 @@ const closePlay = () => {
 </script>
 
 <style scoped>
-/* 让时间选择器居中 */
-.time-picker-container {
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  margin-top: 16px;
-}
 
 /* 调整文字的间距 */
 .time-label {
   margin-right: 10px;
   font-weight: bold;
 }
+
+.time-points {
+  overflow: hidden auto;
+  padding-bottom: 15px;
+}
+
+.time-points > .el-row:not(:first-child) {
+  margin-top: 15px;
+}
+
 /* 播放器 & 按钮的容器 */
 .video-container {
   margin-top: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
   //width: 100%;
-  height: 600px;
+  height: 500px;
   flex: 1; /* 播放器区域占满剩余空间 */
-  min-width: 500px; /* 确保播放器不会太窄 */
-  //background-color: black; /* 让播放器区域清晰 */
+  //min-width: 500px; /* 确保播放器不会太窄 */
 }
 
 /* 播放器区域 */
@@ -221,13 +301,17 @@ const closePlay = () => {
 
 /* 按钮放在播放器外侧的右边 */
 .time-buttons {
+  margin-left: 10px;
   width: 180px; /* 固定按钮区域宽度 */
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
+  height: 100%;
 }
 
 .fixed-button {
+  margin-top: 5px;
   width: 80px; /* 按钮固定宽度 */
 }
 </style>
