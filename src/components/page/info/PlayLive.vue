@@ -52,6 +52,7 @@ const createPlayer = () => {
     isLive: unref(easyplayerConfig).isLive,//默认 true
     bufferTime: 0.2, // 缓存时长
     stretch: false,
+    ptzConfig: {ptz: true, ptzMore: true},
     MSE: unref(easyplayerConfig).MSE,
     WCS: unref(easyplayerConfig).WCS,
     hasAudio: unref(easyplayerConfig).hasAudio,

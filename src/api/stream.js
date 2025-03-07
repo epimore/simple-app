@@ -6,6 +6,12 @@ const liveStream = (data) => {
 const backStream = (data) => {
     return http.post("/stream/play/back", data);
 };
+const seekStream = (data) => {
+    return http.post("/stream/play/back/seek", data);
+};
+const speedStream = (data) => {
+    return http.post("/stream/play/back/speed", data);
+};
 export default {
-    liveStream,backStream
+    liveStream, backStream, seekStream, speedStream
 }
