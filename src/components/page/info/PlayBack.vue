@@ -125,7 +125,7 @@
 
 <script setup>
 import {computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, unref} from "vue"; // 配置文件单独拎出来
-import streamApi from "@/api/stream.js";
+import streamApi from "@/api/dcOpt.js";
 import imgUrl from '@/assets/video_poster.gif';
 import {dayjs, ElMessage} from "element-plus";
 import utc from "dayjs/plugin/utc";
@@ -242,7 +242,6 @@ const sliderTimeChange = async (val) => {
     'seekSecond': (val - min.value) / 1000
   }
   const res = await streamApi.seekStream(seekMode)
-  unref(easyplayer)
   if (res.data.code === 200) {
   } else {
     console.log("seekStream", res.data.msg)

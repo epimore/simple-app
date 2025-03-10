@@ -86,6 +86,9 @@ const closePlay = () => {
               {{ item.status === "ON" ? "在线" : "离线" }}
             </el-tag>
               </span>
+              <span style="margin-left: 3vb;">
+                <el-text type="primary" size="small">{{ item.ptzTypeStr }}</el-text>
+              </span>
             </template>
             <el-image
                 :src="imgUrl"
@@ -108,15 +111,15 @@ const closePlay = () => {
     </div>
   </el-card>
   <PlayLive v-if="showLiveDialog"
-        v-model="showLiveDialog"
-        :dialogTitle="dialogTitle"
-        :videoInfo="currentItemInfo"
-        @closePlay="closePlay"/>
+            v-model="showLiveDialog"
+            :dialogTitle="dialogTitle"
+            :videoInfo="currentItemInfo"
+            @closePlay="closePlay"/>
   <PlayBack v-if="showBackDialog"
-        v-model="showBackDialog"
-        :dialogTitle="dialogTitle"
-        :videoInfo="currentItemInfo"
-        @closePlay="closePlay"/>
+            v-model="showBackDialog"
+            :dialogTitle="dialogTitle"
+            :videoInfo="currentItemInfo"
+            @closePlay="closePlay"/>
 </template>
 
 <style scoped>
