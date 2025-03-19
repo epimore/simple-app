@@ -11,7 +11,7 @@ const post = (url, data) => {
 }
 const get = (url, data) => {
     return new Promise((resolve, reject) => {
-        instance.get(url, { params: data }).then(res => {
+        instance.get(url, {params: data}).then(res => {
             resolve(res)
         }).catch(err => {
             reject(err)
@@ -30,7 +30,7 @@ const put = (url, data) => {
 
 const del = (url, data) => {
     return new Promise((resolve, reject) => {
-        instance.delete(url, { params: data }).then(res => {
+        instance.delete(url, {params: data}).then(res => {
             resolve(res)
         }).catch(err => {
             reject(err)

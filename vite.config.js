@@ -20,7 +20,8 @@ export default defineConfig({
             '/api': {
                 target: 'http://127.0.0.1:38888',
                 changeOrigin: true,
-                rewrite: path => path.replace(/^\/api/, '')
+                rewrite: path => path.replace(/^\/api/, ''),
+                ws: true,
             },
             '/test_1': {
                 target: 'https://epimore.cn',
