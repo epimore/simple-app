@@ -1,23 +1,26 @@
 <template>
-  <el-card>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px">
-      <el-button @click="returnToDeviceList" type="primary" style="margin-left: 0">返回</el-button>
-      <el-tag type="primary" size="large" style="margin-right: 47%">
-        <span style="font-weight: bold;font-size: 16px">{{ props.deviceInfo.alias }}</span>
-      </el-tag>
-    </div>
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">
-      <el-text tag="mark">可接入:{{ props.deviceInfo.maxCamera }} 已接入:{{ props.deviceInfo.cameraInCount }}
-        已掉线:{{ props.deviceInfo.cameraOffCount }}
-      </el-text>
-    </div>
-  </el-card>
-  <el-card>
-    <div class="demo-fit">
-      <el-row :gutter="8">
-        <el-col v-for="item in channels" class="block">
-          <el-card>
-            <template #header>
+  <div v-if="showChannelPage">
+    <el-card>
+      <div
+          style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px; position: relative;">
+        <el-tag type="primary" size="large">
+          <span style="font-weight: bold; font-size: 16px">{{ props.deviceInfo.alias }}</span>
+        </el-tag>
+        <el-button @click="returnToDeviceList" type="primary" style="position: absolute; right: 0;">返回</el-button>
+      </div>
+
+      <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">
+        <el-text tag="mark">可接入:{{ props.deviceInfo.maxCamera }} 已接入:{{ props.deviceInfo.cameraInCount }}
+          已掉线:{{ props.deviceInfo.cameraOffCount }}
+        </el-text>
+      </div>
+    </el-card>
+    <el-card>
+      <div class="demo-fit">
+        <el-row :gutter="8">
+          <el-col v-for="item in channels" class="block">
+            <el-card>
+              <template #header>
             <span class="title">{{ item.name }}
             <el-tag
                 :color="item.status === 'ON' ? '#00a870' : '#eee'"
@@ -26,53 +29,70 @@
               {{ item.status === "ON" ? "在线" : "离线" }}
             </el-tag>
               </span>
-              <span style="margin-left: 3vb;">
+                <span style="margin-left: 3vb;">
                 <el-text type="primary" size="small">{{ item.ptzTypeStr }}</el-text>
               </span>
-            </template>
-            <el-image
-                v-loading="item.picUrl && !imageUrls[item.picUrl]"
-                :src="imageUrls[item.picUrl] || imgUrl"
-                style="width: 288px; height: 216px"
-                fit="cover"
-                @click="showList(item.deviceId, item.channelId)"
-            />
-
-            <el-image-viewer
-                v-if="showPreview[item.channelId]"
-                :url-list="imageShow.get(item.channelId)"
-                @close="showPreview[item.channelId] = false"
-            >
-              <template
-                  #toolbar="{ actions, reset, activeIndex }"
-              >
-                <el-icon @click="actions('zoomOut')">
-                  <ZoomOut/>
-                </el-icon>
-                <el-icon
-                    @click="actions('zoomIn', { enableTransition: false, zoomRate: 2 })"
-                >
-                  <ZoomIn/>
-                </el-icon>
-                <el-icon @click="actions('clockwise', { rotateDeg: 180, enableTransition: false })">
-                  <RefreshRight/>
-                </el-icon>
-                <el-icon @click="actions('anticlockwise')">
-                  <RefreshLeft/>
-                </el-icon>
-                <el-icon @click="reset">
-                  <Refresh/>
-                </el-icon>
-                <el-icon @click="download(item.channelId)">
-                  <Download/>
-                </el-icon>
               </template>
-            </el-image-viewer>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
-  </el-card>
+              <el-image
+                  v-loading="item.picUrl && !imageUrls[item.picUrl]"
+                  :src="imageUrls[item.picUrl] || imgUrl"
+                  style="width: 288px; height: 216px"
+                  fit="cover"
+                  @click="showList(item.channelId)"
+              />
+
+              <el-image-viewer
+                  v-if="showPreview[item.channelId]"
+                  :url-list="imageShow.get(item.channelId)"
+                  @close="showPreview[item.channelId] = false"
+              >
+                <template
+                    #toolbar="{ actions, reset, activeIndex }"
+                >
+                  <el-icon @click="actions('zoomOut')">
+                    <ZoomOut/>
+                  </el-icon>
+                  <el-icon
+                      @click="actions('zoomIn', { enableTransition: false, zoomRate: 2 })"
+                  >
+                    <ZoomIn/>
+                  </el-icon>
+                  <el-icon @click="actions('clockwise', { rotateDeg: 180, enableTransition: false })">
+                    <RefreshRight/>
+                  </el-icon>
+                  <el-icon @click="actions('anticlockwise')">
+                    <RefreshLeft/>
+                  </el-icon>
+                  <el-icon @click="reset">
+                    <Refresh/>
+                  </el-icon>
+                  <el-icon @click="download(item.channelId)">
+                    <Download/>
+                  </el-icon>
+                </template>
+              </el-image-viewer>
+              <template #footer>
+                <div>
+                  <el-button type="info" class="button" :disabled="item.status !== 'ON'"
+                             @click="startPlay('live',item)">
+                    实时直播
+                  </el-button>
+                  <el-button type="info" class="button" :disabled="item.status !== 'ON'"
+                             @click="startPlay('back',item)">
+                    历史回放
+                  </el-button>
+                  <el-button type="info" class="button" :disabled="!item.picUrl" @click="switchPics(item)">
+                    抓拍图集
+                  </el-button>
+                </div>
+              </template>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
+    </el-card>
+  </div>
+
   <PlayLive v-if="showLiveDialog"
             v-model="showLiveDialog"
             :dialogTitle="dialogTitle"
@@ -83,6 +103,10 @@
             :dialogTitle="dialogTitle"
             :videoInfo="currentItemInfo"
             @closePlay="closePlay"/>
+  <Pics v-if="showPicPage"
+        :channelInfo="currentItemInfo"
+        @closeBack="closeBack"
+  />
 </template>
 
 <script setup>
@@ -92,14 +116,8 @@ import {ElMessage} from "element-plus";
 import imgUrl from '@/assets/ipc.png'
 import PlayLive from "@/components/page/info/PlayLive.vue";
 import PlayBack from "@/components/page/info/PlayBack.vue";
-import {
-  Download,
-  Refresh,
-  RefreshLeft,
-  RefreshRight,
-  ZoomIn,
-  ZoomOut,
-} from '@element-plus/icons-vue'
+import {Download, Refresh, RefreshLeft, RefreshRight, ZoomIn, ZoomOut,} from '@element-plus/icons-vue'
+import Pics from "@/components/page/info/PicPage.vue";
 
 const channels = ref([]);
 const deviceInfo = ref(null)
@@ -147,7 +165,7 @@ const download = (channelId) => {
 };
 
 
-const showList = (did, cid) => {
+const showList = (cid) => {
   if (imageShow.value.has(cid)) {
     showPreview.value[cid] = true;
   } else {
@@ -203,8 +221,10 @@ const returnToDeviceList = () => {
   props.emitter.emit('switch-to-device');
 };
 
+const showChannelPage = ref(true);
 const showLiveDialog = ref(false);
 const showBackDialog = ref(false);
+const showPicPage = ref(false);
 const dialogTitle = ref('播放');
 const currentItemInfo = ref({});
 const startPlay = (mode, item = {}) => {
@@ -222,6 +242,17 @@ const startPlay = (mode, item = {}) => {
 const closePlay = () => {
   getChannels(props.deviceInfo.deviceId);
   showLiveDialog.value = false
+}
+
+const switchPics = (item) => {
+  currentItemInfo.value = item;
+  showPicPage.value = true;
+  showChannelPage.value = false;
+}
+const closeBack = () => {
+  getChannels(props.deviceInfo.deviceId);
+  showPicPage.value = false;
+  showChannelPage.value = true;
 }
 </script>
 
