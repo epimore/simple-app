@@ -38,6 +38,10 @@ const del = (url, data) => {
     })
 }
 
+export const request_image = async (url) => {
+    return instance.get(url, {responseType: "blob"});
+};
+
 export default {
-    post, get, put, del
+    post, get, put, del, request_image
 }

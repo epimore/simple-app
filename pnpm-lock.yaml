@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@element-plus/components':
+        specifier: ^0.0.5
+        version: 0.0.5(vue@3.5.4)
       '@microsoft/fetch-event-source':
         specifier: ^2.0.1
         version: 2.0.1
@@ -63,10 +66,45 @@ packages:
     resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==, tarball: https://registry.npmmirror.com/@ctrl/tinycolor/-/tinycolor-3.6.1.tgz}
     engines: {node: '>=10'}
 
+  '@element-plus/components@0.0.5':
+    resolution: {integrity: sha512-e1zt9G+6sHGsOKHtDv9cuPR4VTZ6hTg4oJ0kOI5cu8yycESVdqKqjuHqimL+y+Np3CXeJFWxDykTSf1p1kus+Q==, tarball: https://registry.npmmirror.com/@element-plus/components/-/components-0.0.5.tgz}
+
+  '@element-plus/directives@0.0.5':
+    resolution: {integrity: sha512-q036eHc/vVTnnzua5i4veJRs206AGFimPPiokwYUre4WVvnEwVbn6/FPG6iWx2mchplFnO78IRFKAx8HI/6AuQ==, tarball: https://registry.npmmirror.com/@element-plus/directives/-/directives-0.0.5.tgz}
+    peerDependencies:
+      vue: 3.1.1
+
+  '@element-plus/hooks@0.0.5':
+    resolution: {integrity: sha512-tLhTXVmtPYYHfYqyNZ1v8twtHKJLOYBH5NJPUfc+fB1pz2V1lUZrhldyKQ/0u/NkRCWNhHWVmf8FcR1Pm7yvww==, tarball: https://registry.npmmirror.com/@element-plus/hooks/-/hooks-0.0.5.tgz}
+    peerDependencies:
+      vue: 3.1.1
+
   '@element-plus/icons-vue@2.3.1':
     resolution: {integrity: sha512-XxVUZv48RZAd87ucGS48jPf6pKu0yV5UCg9f4FFwtrYxXOwWuVJo6wOvSLKEoMQKjv8GsX/mhP6UsC1lRwbUWg==, tarball: https://registry.npmmirror.com/@element-plus/icons-vue/-/icons-vue-2.3.1.tgz}
     peerDependencies:
       vue: ^3.2.0
+
+  '@element-plus/icons@0.0.11':
+    resolution: {integrity: sha512-iKQXSxXu131Ai+I9Ymtcof9WId7kaXvB1+WRfAfpQCW7UiAMYgdNDqb/u0hgTo2Yq3MwC4MWJnNuTBEpG8r7+A==, tarball: https://registry.npmmirror.com/@element-plus/icons/-/icons-0.0.11.tgz}
+    deprecated: Please use @element-plus/icons-vue instead.
+
+  '@element-plus/locale@0.0.5':
+    resolution: {integrity: sha512-Eqmbz3mB2eY+Ro7vVxYz+J33P66QmCDykX0SsyJVCMwEwDHgPDQtJZplLHgSSK+ihwQKg70wfIhldojEef85uw==, tarball: https://registry.npmmirror.com/@element-plus/locale/-/locale-0.0.5.tgz}
+    peerDependencies:
+      vue: 3.1.1
+
+  '@element-plus/theme-chalk@0.0.5':
+    resolution: {integrity: sha512-F9TcEjAPjLzuJNX1qnu3Gp1ydEJ4ms6g/AFo3fzBhi4Cc2FhQ+Ci34hgc/jhzFwU1mHPS6V+JXoGGVSbZGYGhg==, tarball: https://registry.npmmirror.com/@element-plus/theme-chalk/-/theme-chalk-0.0.5.tgz}
+
+  '@element-plus/tokens@0.0.5':
+    resolution: {integrity: sha512-l8xQnBsznCYtyLFR5AdkJiV8Oiw53Jmg6UJn01ZGR4IN25B+X+f7m7rCvsEBocQJWWboSG8Qkr2bOMNw4/g4xA==, tarball: https://registry.npmmirror.com/@element-plus/tokens/-/tokens-0.0.5.tgz}
+    peerDependencies:
+      vue: 3.1.1
+
+  '@element-plus/utils@0.0.5':
+    resolution: {integrity: sha512-te1xzcbDbLZlA3qNvbvK7ARIQWsgWUvxpdNwe2z6KV4llFMg6/yCRY36c1B4uwq6tGEEheruWxwSLQjDVvhtrw==, tarball: https://registry.npmmirror.com/@element-plus/utils/-/utils-0.0.5.tgz}
+    peerDependencies:
+      vue: 3.1.1
 
   '@esbuild/aix-ppc64@0.25.1':
     resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==, tarball: https://registry.npmmirror.com/@esbuild/aix-ppc64/-/aix-ppc64-0.25.1.tgz}
@@ -232,6 +270,9 @@ packages:
 
   '@microsoft/fetch-event-source@2.0.1':
     resolution: {integrity: sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==, tarball: https://registry.npmmirror.com/@microsoft/fetch-event-source/-/fetch-event-source-2.0.1.tgz}
+
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==, tarball: https://registry.npmmirror.com/@popperjs/core/-/core-2.11.8.tgz}
 
   '@rollup/rollup-android-arm-eabi@4.36.0':
     resolution: {integrity: sha512-jgrXjjcEwN6XpZXL0HUeOVGfjXhPyxAbbhD0BlXUB+abTOpbPiN5Wb3kOT7yb+uEtATNYF5x5gIfwutmuBA26w==, tarball: https://registry.npmmirror.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.36.0.tgz}
@@ -401,6 +442,9 @@ packages:
   '@vueuse/shared@9.13.0':
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-9.13.0.tgz}
 
+  async-validator@3.5.2:
+    resolution: {integrity: sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==, tarball: https://registry.npmmirror.com/async-validator/-/async-validator-3.5.2.tgz}
+
   async-validator@4.2.5:
     resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==, tarball: https://registry.npmmirror.com/async-validator/-/async-validator-4.2.5.tgz}
 
@@ -489,6 +533,9 @@ packages:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==, tarball: https://registry.npmmirror.com/mime-types/-/mime-types-2.1.35.tgz}
     engines: {node: '>= 0.6'}
 
+  mitt@2.1.0:
+    resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==, tarball: https://registry.npmmirror.com/mitt/-/mitt-2.1.0.tgz}
+
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==, tarball: https://registry.npmmirror.com/mitt/-/mitt-3.0.1.tgz}
 
@@ -504,6 +551,9 @@ packages:
 
   normalize-wheel-es@1.2.0:
     resolution: {integrity: sha512-Wj7+EJQ8mSuXr2iWfnujrimU35R2W4FAErEyTmJoJ7ucwTn2hOUSsRehMb5RSYkxXGTM7Y9QpvPmp++w5ftoJw==, tarball: https://registry.npmmirror.com/normalize-wheel-es/-/normalize-wheel-es-1.2.0.tgz}
+
+  normalize-wheel@1.0.1:
+    resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==, tarball: https://registry.npmmirror.com/normalize-wheel/-/normalize-wheel-1.0.1.tgz}
 
   picocolors@1.1.0:
     resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==, tarball: https://registry.npmmirror.com/picocolors/-/picocolors-1.1.0.tgz}
@@ -521,6 +571,9 @@ packages:
 
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==, tarball: https://registry.npmmirror.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz}
+
+  resize-observer-polyfill@1.5.1:
+    resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==, tarball: https://registry.npmmirror.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz}
 
   rollup@4.36.0:
     resolution: {integrity: sha512-zwATAXNQxUcd40zgtQG0ZafcRK4g004WtEl7kbuhTWPvf07PsfohXl39jVUvPF7jvNAIkKPQ2XrsDlWuxBd++Q==, tarball: https://registry.npmmirror.com/rollup/-/rollup-4.36.0.tgz}
@@ -617,8 +670,63 @@ snapshots:
 
   '@ctrl/tinycolor@3.6.1': {}
 
+  '@element-plus/components@0.0.5(vue@3.5.4)':
+    dependencies:
+      '@element-plus/directives': 0.0.5(vue@3.5.4)
+      '@element-plus/hooks': 0.0.5(vue@3.5.4)
+      '@element-plus/icons': 0.0.11
+      '@element-plus/theme-chalk': 0.0.5
+      '@element-plus/tokens': 0.0.5(vue@3.5.4)
+      '@element-plus/utils': 0.0.5(vue@3.5.4)
+      '@popperjs/core': 2.11.8
+      async-validator: 3.5.2
+      dayjs: 1.11.13
+      lodash: 4.17.21
+      mitt: 2.1.0
+    transitivePeerDependencies:
+      - vue
+
+  '@element-plus/directives@0.0.5(vue@3.5.4)':
+    dependencies:
+      '@element-plus/utils': 0.0.5(vue@3.5.4)
+      normalize-wheel: 1.0.1
+      vue: 3.5.4
+
+  '@element-plus/hooks@0.0.5(vue@3.5.4)':
+    dependencies:
+      '@element-plus/directives': 0.0.5(vue@3.5.4)
+      '@element-plus/locale': 0.0.5(vue@3.5.4)
+      '@element-plus/utils': 0.0.5(vue@3.5.4)
+      '@popperjs/core': 2.11.8
+      vue: 3.5.4
+
   '@element-plus/icons-vue@2.3.1(vue@3.5.4)':
     dependencies:
+      vue: 3.5.4
+
+  '@element-plus/icons@0.0.11': {}
+
+  '@element-plus/locale@0.0.5(vue@3.5.4)':
+    dependencies:
+      dayjs: 1.11.13
+      vue: 3.5.4
+
+  '@element-plus/theme-chalk@0.0.5': {}
+
+  '@element-plus/tokens@0.0.5(vue@3.5.4)':
+    dependencies:
+      async-validator: 3.5.2
+      lodash: 4.17.21
+      mitt: 2.1.0
+      normalize-wheel: 1.0.1
+      resize-observer-polyfill: 1.5.1
+      vue: 3.5.4
+
+  '@element-plus/utils@0.0.5(vue@3.5.4)':
+    dependencies:
+      lodash: 4.17.21
+      normalize-wheel: 1.0.1
+      resize-observer-polyfill: 1.5.1
       vue: 3.5.4
 
   '@esbuild/aix-ppc64@0.25.1':
@@ -710,6 +818,8 @@ snapshots:
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
   '@microsoft/fetch-event-source@2.0.1': {}
+
+  '@popperjs/core@2.11.8': {}
 
   '@rollup/rollup-android-arm-eabi@4.36.0':
     optional: true
@@ -860,6 +970,8 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
+  async-validator@3.5.2: {}
+
   async-validator@4.2.5: {}
 
   asynckit@0.4.0: {}
@@ -970,6 +1082,8 @@ snapshots:
     dependencies:
       mime-db: 1.52.0
 
+  mitt@2.1.0: {}
+
   mitt@3.0.1: {}
 
   nanoid@3.3.10: {}
@@ -977,6 +1091,8 @@ snapshots:
   nanoid@3.3.7: {}
 
   normalize-wheel-es@1.2.0: {}
+
+  normalize-wheel@1.0.1: {}
 
   picocolors@1.1.0: {}
 
@@ -995,6 +1111,8 @@ snapshots:
       source-map-js: 1.2.1
 
   proxy-from-env@1.1.0: {}
+
+  resize-observer-polyfill@1.5.1: {}
 
   rollup@4.36.0:
     dependencies:

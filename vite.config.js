@@ -17,6 +17,11 @@ export default defineConfig({
         open: false,
         port: 1573,
         proxy: {
+            '/api/pics': {
+                target: 'https://epimore.cn',
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/api\/pics/, '/api/pics'),
+            },
             '/api': {
                 target: 'http://127.0.0.1:38888',
                 changeOrigin: true,
