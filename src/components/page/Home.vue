@@ -144,7 +144,6 @@ export default {
   },
   watch: {
     activeTabName: function () {
-      console.log("高亮的index值", this.activeTabName);
     },
   },
   methods: {

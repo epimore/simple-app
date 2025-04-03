@@ -31,6 +31,7 @@
               </span>
             </template>
             <el-image
+                v-loading="item.picUrl && !imageUrls[item.picUrl]"
                 :src="imageUrls[item.picUrl] || imgUrl"
                 style="width: 288px; height: 216px"
                 fit="cover"
@@ -41,7 +42,32 @@
                 v-if="showPreview[item.channelId]"
                 :url-list="imageShow.get(item.channelId)"
                 @close="showPreview[item.channelId] = false"
-            />
+            >
+              <template
+                  #toolbar="{ actions, reset, activeIndex }"
+              >
+                <el-icon @click="actions('zoomOut')">
+                  <ZoomOut/>
+                </el-icon>
+                <el-icon
+                    @click="actions('zoomIn', { enableTransition: false, zoomRate: 2 })"
+                >
+                  <ZoomIn/>
+                </el-icon>
+                <el-icon @click="actions('clockwise', { rotateDeg: 180, enableTransition: false })">
+                  <RefreshRight/>
+                </el-icon>
+                <el-icon @click="actions('anticlockwise')">
+                  <RefreshLeft/>
+                </el-icon>
+                <el-icon @click="reset">
+                  <Refresh/>
+                </el-icon>
+                <el-icon @click="download(item.channelId)">
+                  <Download/>
+                </el-icon>
+              </template>
+            </el-image-viewer>
           </el-card>
         </el-col>
       </el-row>
@@ -60,18 +86,37 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watchEffect} from "vue";
+import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import infosApi from "@/api/info.js";
 import {ElMessage} from "element-plus";
 import imgUrl from '@/assets/ipc.png'
 import PlayLive from "@/components/page/info/PlayLive.vue";
 import PlayBack from "@/components/page/info/PlayBack.vue";
+import {
+  Download,
+  Refresh,
+  RefreshLeft,
+  RefreshRight,
+  ZoomIn,
+  ZoomOut,
+} from '@element-plus/icons-vue'
 
 const channels = ref([]);
 const deviceInfo = ref(null)
 onMounted(() => {
   getChannels(props.deviceInfo.deviceId);
-})
+});
+onUnmounted(() => {
+  for (const url of imageCache.values()) {
+    URL.revokeObjectURL(url); // 释放 Blob URL
+  }
+  imageCache.clear(); // 清空 Map
+  imageUrls.value = {}; // 清空本地存储的 URL
+  imageShow.value.clear(); // 清空显示列表
+  showPreview.value = {}; // 重置预览状态
+});
+
+
 const getChannels = async (id) => {
   try {
     const res = await infosApi.channelInfo({deviceId: id});
@@ -84,64 +129,41 @@ const getChannels = async (id) => {
 const imageUrls = ref({}); // 存储每个 `item` 的图片 URL
 //remoteUrl:localUrl
 const imageCache = new Map();
-const channelImages = ref({});
 let imageShow = ref(new Map());
-const showPreview = ref({})
+const showPreview = ref({});
+
+const download = (channelId) => {
+  if (imageShow.value.has(channelId)) {
+    const url = imageShow.value.get(channelId)[0];
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${channelId}_${Date.now()}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    ElMessage.error("该相机尚未生成封面快照.");
+  }
+};
+
 
 const showList = (did, cid) => {
   if (imageShow.value.has(cid)) {
     showPreview.value[cid] = true;
-  }else {
-    ElMessage.error("该相机无预览照片");
+  } else {
+    ElMessage.error("该相机尚未生成封面快照.");
   }
 };
-// queryImageList(did, cid);
-
-const queryImageList = async (did, cid, st, et) => {
-  try {
-    let info = await infosApi.channelImages({
-      channelId: cid,
-      deviceId: did,
-      endTime: et,
-      startTime: st,
-      pageSize: 2,
-    });
-    if (info.data.code !== 200 || info.data.data.size === 0) {
-      ElMessage.error("该相机无预览照片");
-      return;
-    }
-    channelImages.value = {channelId: cid, data: info.data};
-  } catch (error) {
-    console.error("Error fetching images:", error);
-  }
-}
-watchEffect(async () => {
-  if (!channelImages.value?.data?.data?.list) {
-    return;
-  }
-  let cid = channelImages.value.channelId;
-  const newList = [];
-  for (const item of channelImages.value.data.data.list) {
-    if (item.picUrl) {
-      newList.push(await getImage(item.picUrl));
-    }
-  }
-  if (newList.length === 0) {
-    return;
-  }
-  imageShow.value.set(cid, newList);
-  // showPreview.value[cid] = true;
-});
 
 // 监听 `channels` 数据变化，为每个 `item` 获取 `imageUrl`
 watchEffect(async () => {
   for (const item of channels.value) {
     if (item.picUrl) {
-      if (!imageCache.has(item.picUrl)){
+      if (!imageCache.has(item.picUrl)) {
         let res = await getImage(item.picUrl);
         imageUrls.value[item.picUrl] = res;
         imageShow.value.set(item.channelId, [res]);
-      }else {
+      } else {
         imageShow.value.set(item.channelId, [imageCache.get(item.picUrl)]);
       }
     }

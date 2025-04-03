@@ -13,7 +13,7 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "axios": "^1.8.2",
     "dayjs": "^1.11.13",
-    "element-plus": "^2.8.3",
+    "element-plus": "^2.9.7",
     "mitt": "^3.0.1",
     "vue": "^3.4.29",
     "vue-router": "^4.4.5"

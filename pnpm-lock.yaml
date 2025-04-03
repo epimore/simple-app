@@ -21,8 +21,8 @@ importers:
         specifier: ^1.11.13
         version: 1.11.13
       element-plus:
-        specifier: ^2.8.3
-        version: 2.8.3(vue@3.5.4)
+        specifier: ^2.9.7
+        version: 2.9.7(vue@3.5.4)
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -468,8 +468,8 @@ packages:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==, tarball: https://registry.npmmirror.com/delayed-stream/-/delayed-stream-1.0.0.tgz}
     engines: {node: '>=0.4.0'}
 
-  element-plus@2.8.3:
-    resolution: {integrity: sha512-BXQOyDf0s7JHyNEV8iaO+iaOzTZPsBXVKMzMI967vLCodUBDLrtiY5vglAn1YEebQcUOEUMhGcttTpIvEkcBjQ==, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.8.3.tgz}
+  element-plus@2.9.7:
+    resolution: {integrity: sha512-6vjZh5SXBncLhUwJGTVKS5oDljfgGMh6J4zVTeAZK3YdMUN76FgpvHkwwFXocpJpMbii6rDYU3sgie64FyPerQ==, tarball: https://registry.npmmirror.com/element-plus/-/element-plus-2.9.7.tgz}
     peerDependencies:
       vue: ^3.2.0
 
@@ -994,7 +994,7 @@ snapshots:
 
   delayed-stream@1.0.0: {}
 
-  element-plus@2.8.3(vue@3.5.4):
+  element-plus@2.9.7(vue@3.5.4):
     dependencies:
       '@ctrl/tinycolor': 3.6.1
       '@element-plus/icons-vue': 2.3.1(vue@3.5.4)
